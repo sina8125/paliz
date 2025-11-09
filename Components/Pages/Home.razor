@@ -1,0 +1,313 @@
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+﻿@using System.Globalization
+@using System.Reflection
+@inject ISnackbar Snackbar
+
+
+
+
+<PageTitle>Home</PageTitle>
+<MudPaper class="p-3">
+<MudForm @ref="form">
+
+<MudGrid>
+
+    <MudItem xs="4">
+        <MudTextField @bind-Value="model.ProductName" Label="نام کالا" Required RequiredError="این فیلد اجباری است"
+            Variant="Variant.Outlined" Adornment="Adornment.Start"></MudTextField>
+    </MudItem>
+    <MudItem xs="4">
+        <MudTextField @bind-Value="model.Category" TextUpdateSuppression=false ReadOnly Label="دسته بندی" Required
+            RequiredError="این فیلد اجباری است" Variant="Variant.Outlined" Adornment="Adornment.Start"></MudTextField>
+
+        <MudTreeView Hover @bind-SelectedValue="model.Category" Items="@_treeItemData" @ref="_treeView">
+            <ItemTemplate Context="tree">
+
+                <MudTreeViewItem Items="@tree.Children" Value="@tree.Value" Icon="@tree.Icon"
+                    Text="@tree.Text" Visible="@tree.Visible" />
+            </ItemTemplate>
+
+        </MudTreeView>
+    </MudItem>
+    <MudItem xs="4">
+        <MudSelect @bind-Value="model.BrandName" Label="نام برند" Required RequiredError="این فیلد اجباری است" Variant="Variant.Outlined"
+            Adornment="Adornment.Start">
+            @foreach (var brand in Brands)
+            {
+                <MudSelectItem Value="@brand">@brand</MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="4">
+        <MudTextField @bind-Value="model.SupplierName" Label="نام تامین کننده" Variant="Variant.Outlined"
+            Adornment="Adornment.Start"></MudTextField>
+
+    </MudItem>
+    <MudItem xs="4">
+        <MudNumericField @bind-Value="model.Quantity" Min="0" Label="موجودی" Required RequiredError="این فیلد اجباری است"
+            Variant="Variant.Outlined" Adornment="Adornment.Start" HideSpinButtons="true"></MudNumericField>
+    </MudItem>
+    <MudItem xs="4">
+        <MudNumericField @bind-Value="model.Price" Min="0" Label="قیمت(ریال)" Required RequiredError="این فیلد اجباری است"
+            Variant="Variant.Outlined" Adornment="Adornment.Start" HideSpinButtons="true"></MudNumericField>
+    </MudItem>
+    <MudItem xs="4">
+    <MudTextField @bind-Value="model.Email" Label="ایمیل تامین کننده"
+            Variant="Variant.Outlined" Adornment="Adornment.Start"
+            Validation="@(new EmailAddressAttribute() { ErrorMessage = "آدرس ایمیل نامعتبر است" })"></MudTextField>
+    </MudItem>
+    <MudItem xs="4">
+        <MudDatePicker Label="تاریخ شروع نمایش" Validation="ValidateStartDate" Editable="true" Culture="@GetPersianCulture()" @bind-Date="model.StartDate" Mask="@(new DateMask("0000/00/00"))" DateFormat="yyyy-MM-dd" Placeholder="از" Variant="Variant.Outlined" Adornment="Adornment.Start"/>
+    </MudItem>
+    <MudItem xs="4">
+        <MudDatePicker Label="تاریخ پایان نمایش" Validation="ValidateEndDate" Editable="true" Culture="@GetPersianCulture()" @bind-Date="model.EndDate" Mask="@(new DateMask("0000/00/00"))" DateFormat="yyyy-MM-dd" Placeholder="تا" Variant="Variant.Outlined" Adornment="Adornment.Start"/>
+    </MudItem>
+    <MudItem xs="4">
+    <div class="d-flex align-center justify-center mud-width-full py-8" style="margin-top: -30px;">
+        <MudTextField @bind-Value="model.ProductImageName" Required RequiredError="این فیلد اجباری است" ReadOnly Label="تصویر کالا" Variant="Variant.Outlined" Adornment="Adornment.Start"/>
+        <MudFileUpload T="IBrowserFile" Accept="image/*" FilesChanged="UploadImageFile">
+    <ActivatorContent>
+        <MudButton Variant="Variant.Filled" style="height: 100%; display: block;">
+                                           Select
+        </MudButton>
+    </ActivatorContent>
+</MudFileUpload>
+    </div>
+    
+
+    </MudItem>
+    <MudItem xs="4">
+    <div class="d-flex align-center justify-center mud-width-full py-8" style="margin-top: -30px;">
+        <MudTextField @bind-Value="model.CatalogImageName" ReadOnly Label="کاتالوگ کالا" Variant="Variant.Outlined" Adornment="Adornment.Start"/>
+        <MudFileUpload T="IBrowserFile" Accept="image/*" FilesChanged="UploadCatalogFile">
+    <ActivatorContent>
+        <MudButton Variant="Variant.Filled" style="height: 100%; display: block;">
+                                           Select
+        </MudButton>
+    </ActivatorContent>
+</MudFileUpload>
+    </div>
+    
+
+    </MudItem>
+    <MudItem xs="4">
+    <MudColorPicker PaletteIcon="@Icons.Material.Filled.Favorite" Label="رنگ" ColorPickerView="ColorPickerView.Palette" />
+
+    </MudItem>
+</MudGrid>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="ProcessSomething">Register</MudButton>
+
+            </MudForm>   
+
+</MudPaper>
+<MudPaper class="p-3 mt-2">
+<MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.Sm">
+    <HeaderContent>
+        <MudTh>نام کالا</MudTh>
+        <MudTh>دسته بندی</MudTh>
+        <MudTh>نام برند</MudTh>
+        <MudTh>نام تامین کننده</MudTh>
+        <MudTh>موجودی</MudTh>
+        <MudTh>قیمت(ریال)</MudTh>
+        <MudTh>ایمیل تامین کننده</MudTh>
+        <MudTh>تاریخ شروع نمایش</MudTh>
+        <MudTh>تاریخ پایان نمایش</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ProductName">@context.ProductName</MudTd>
+        <MudTd DataLabel="Category">@context.Category</MudTd>
+        <MudTd DataLabel="BrandName">@context.BrandName</MudTd>
+        <MudTd DataLabel="SupplierName">@context.SupplierName</MudTd>
+        <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
+        <MudTd DataLabel="Price">@context.Price</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+        <MudTd DataLabel="StartDate">
+    @{
+        var pc = new PersianCalendar();
+        if (context.StartDate != null)
+        {
+            var date = context.StartDate.Value;
+            var persianDate = $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
+            @persianDate
+        }
+        else
+        {
+            @("-")
+        }
+    }
+</MudTd>
+<MudTd DataLabel="EndDate">
+    @{
+        var pc = new PersianCalendar();
+        if (context.EndDate != null)
+        {
+            var date = context.EndDate.Value;
+            var persianDate = $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
+            @persianDate
+        }
+        else
+        {
+            @(textContent: "-")
+        }
+    }
+</MudTd>
+    </RowTemplate>
+</MudTable>
+
+</MudPaper>
+
+
+@code {
+    MudForm form;
+
+    Product model = new Product();
+    List<Product> Elements = new List<Product>();
+
+    public string[] Brands = [
+    "adidas",
+"Nike"
+    ];
+
+    private MudTreeView<string> _treeView;
+    private List<TreeItemData<string>> _treeItemData = [];
+
+    public class TreeItemPresenter : TreeItemData<string>
+    {
+        public TreeItemPresenter(string text, string icon) : base(text)
+        {
+            Text = text;
+            Icon = icon;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _treeItemData.Add(new TreeItemPresenter("کفش", Icons.Material.Filled.Label)
+        {
+            Expanded = true,
+            Children =
+        [
+        new TreeItemPresenter("ورزشی", Icons.Material.Filled.Group),
+new TreeItemPresenter("طبی", Icons.Material.Filled.Info),
+]
+        });
+        _treeItemData.Add(new TreeItemPresenter("پیراهن", Icons.Material.Filled.Label));
+    }
+
+    public CultureInfo GetPersianCulture()
+    {
+        var culture = new CultureInfo("fa-IR");
+        DateTimeFormatInfo formatInfo = culture.DateTimeFormat;
+        formatInfo.AbbreviatedDayNames = new[] { "ی", "د", "س", "چ", "پ", "ج", "ش" };
+        formatInfo.DayNames = new[] { "یکشنبه", "دوشنبه", "سه شنبه", "چهار شنبه", "پنجشنبه", "جمعه", "شنبه" };
+        var monthNames = new[]
+        {
+            "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن",
+            "اسفند",
+            "",
+        };
+        formatInfo.AbbreviatedMonthNames =
+            formatInfo.MonthNames =
+                formatInfo.MonthGenitiveNames = formatInfo.AbbreviatedMonthGenitiveNames = monthNames;
+        formatInfo.AMDesignator = "ق.ظ";
+        formatInfo.PMDesignator = "ب.ظ";
+        formatInfo.ShortDatePattern = "yyyy/MM/dd";
+        formatInfo.LongDatePattern = "dddd, dd MMMM,yyyy";
+        formatInfo.FirstDayOfWeek = DayOfWeek.Saturday;
+        Calendar cal = new PersianCalendar();
+        FieldInfo fieldInfo = culture.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (fieldInfo != null)
+            fieldInfo.SetValue(culture, cal);
+        FieldInfo info = formatInfo.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (info != null)
+            info.SetValue(formatInfo, cal);
+        culture.NumberFormat.NumberDecimalSeparator = "/";
+        culture.NumberFormat.DigitSubstitution = DigitShapes.NativeNational;
+        culture.NumberFormat.NumberNegativePattern = 0;
+        return culture;
+    }
+private string ValidateStartDate(DateTime? value)
+{
+    if (value == null)
+        return null;
+
+    if (model.EndDate != null && value > model.EndDate)
+        return "تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.";
+
+    return null;
+}
+
+private string ValidateEndDate(DateTime? value)
+{
+    if (value == null)
+        return null;
+
+    if (model.StartDate != null && value < model.StartDate)
+        return "تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد.";
+
+    return null;
+}
+
+    public class Product: ICloneable{
+        public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
+        public string ProductName { get; set; }
+        public string Category { get; set; }
+        public string BrandName { get; set; }
+        public string SupplierName {get; set;}
+        public double Quantity { get; set; }
+        public int Price { get; set; }
+        public string Email { get; set; }
+        public DateTime? StartDate { get; set; } = null;
+        public DateTime? EndDate { get; set; } = null;
+        public IBrowserFile ProductImage { get; set; }
+        public string ProductImageName { get; set; }
+
+        public IBrowserFile? CatalogImage { get; set; } = null;
+        public string? CatalogImageName { get; set; } = null ;
+
+
+    }
+    async Task ProcessSomething()
+    {
+        await form.Validate();
+        if (form.IsValid){
+            Elements.Add(model);
+            model=new Product();
+        }
+
+
+
+    }
+private async Task UploadImageFile(IBrowserFile file)
+{
+    if (!file.ContentType.StartsWith("image/"))
+    {
+        Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
+        model.ProductImage = null;
+        model.ProductImageName = string.Empty;
+        return;
+    }
+
+    model.ProductImage = file;
+    model.ProductImageName = file.Name;
+    Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
+}
+private async Task UploadCatalogFile(IBrowserFile file)
+{
+    if (!file.ContentType.StartsWith("image/"))
+    {
+        Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
+        model.CatalogImage = null;
+        model.CatalogImageName = string.Empty;
+        return;
+    }
+
+    model.CatalogImage = file;
+    model.CatalogImageName = file.Name;
+    Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
+}
+}
