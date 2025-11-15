@@ -1,0 +1,115 @@
+2025-11-15 09:32:23.788 +03:30 [INF] OnInitialized started.
+2025-11-15 09:32:23.839 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 09:32:27.916 +03:30 [INF] OnInitialized started.
+2025-11-15 09:32:27.917 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 09:32:50.949 +03:30 [INF] OnInitialized started.
+2025-11-15 09:32:51.000 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 09:32:53.961 +03:30 [INF] OnInitialized started.
+2025-11-15 09:32:53.962 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 09:34:55.191 +03:30 [INF] OnInitialized started.
+2025-11-15 09:34:55.240 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 10:14:53.994 +03:30 [INF] get all products
+2025-11-15 11:49:58.129 +03:30 [INF] OnInitialized started.
+2025-11-15 11:49:58.184 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 11:50:01.875 +03:30 [INF] OnInitialized started.
+2025-11-15 11:50:01.876 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 11:50:14.246 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 11:50:15.542 +03:30 [INF] Image file bac8fdf2-715f-409a-9788-2b9b76cd149e.PNG saved successfully.
+2025-11-15 11:50:16.785 +03:30 [INF] ProcessSomething started.
+2025-11-15 11:50:16.805 +03:30 [INF] Validating StartDate: null
+2025-11-15 11:50:16.807 +03:30 [INF] Validating EndDate: null
+2025-11-15 11:50:16.809 +03:30 [INF] Form is valid.
+2025-11-15 11:50:16.810 +03:30 [INF] Adding new product: test
+2025-11-15 11:50:18.047 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 11:54:20.242 +03:30 [INF] get all products
+2025-11-15 11:55:25.713 +03:30 [INF] OnInitialized started.
+2025-11-15 11:55:25.716 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 11:55:29.362 +03:30 [INF] OnInitialized started.
+2025-11-15 11:55:29.363 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 11:55:34.306 +03:30 [INF] get all products
+2025-11-15 11:55:40.058 +03:30 [INF] get all products
+2025-11-15 11:56:53.847 +03:30 [INF] get all products
+2025-11-15 11:57:10.099 +03:30 [INF] get all products
+2025-11-15 11:59:00.763 +03:30 [INF] get all products
+2025-11-15 12:01:08.199 +03:30 [INF] get all products
+2025-11-15 12:02:00.715 +03:30 [INF] get all products
+2025-11-15 12:04:02.918 +03:30 [INF] get all products
+2025-11-15 12:04:52.538 +03:30 [INF] get all products
+2025-11-15 12:05:01.514 +03:30 [INF] OnInitialized started.
+2025-11-15 12:05:01.517 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:05:04.876 +03:30 [INF] OnInitialized started.
+2025-11-15 12:05:04.877 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:05:34.452 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 12:05:35.755 +03:30 [INF] Image file afcf9d7a-7b91-4d34-a434-d6b8b457ad37.PNG saved successfully.
+2025-11-15 12:05:40.124 +03:30 [INF] ProcessSomething started.
+2025-11-15 12:05:40.154 +03:30 [INF] Validating StartDate: null
+2025-11-15 12:05:40.156 +03:30 [INF] Validating EndDate: null
+2025-11-15 12:05:40.158 +03:30 [INF] Form is valid.
+2025-11-15 12:05:40.158 +03:30 [INF] Adding new product: test
+2025-11-15 12:05:41.389 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 12:05:52.274 +03:30 [INF] OnInitialized started.
+2025-11-15 12:05:52.275 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:05:54.239 +03:30 [INF] OnInitialized started.
+2025-11-15 12:05:54.265 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:05:55.521 +03:30 [INF] get all products
+2025-11-15 12:08:26.488 +03:30 [INF] OnInitialized started.
+2025-11-15 12:08:26.539 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:08:29.101 +03:30 [INF] OnInitialized started.
+2025-11-15 12:08:29.103 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:08:36.082 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 12:08:36.129 +03:30 [INF] Image file eb6207a8-2dfd-44be-97e2-b4003d9917dc.PNG saved successfully.
+2025-11-15 12:08:36.882 +03:30 [INF] ProcessSomething started.
+2025-11-15 12:08:36.911 +03:30 [INF] Validating StartDate: null
+2025-11-15 12:08:36.912 +03:30 [INF] Validating EndDate: null
+2025-11-15 12:08:36.914 +03:30 [INF] Form is valid.
+2025-11-15 12:08:36.915 +03:30 [INF] Adding new product: sss
+2025-11-15 12:08:38.213 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 12:08:41.659 +03:30 [INF] get all products
+2025-11-15 12:09:05.481 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 12:09:05.494 +03:30 [INF] Image file 7040bacf-4aa2-4d0c-969d-d9d2432c7572.PNG saved successfully.
+2025-11-15 12:09:06.200 +03:30 [INF] ProcessSomething started.
+2025-11-15 12:09:06.202 +03:30 [INF] Validating StartDate: null
+2025-11-15 12:09:06.202 +03:30 [INF] Validating EndDate: null
+2025-11-15 12:09:06.203 +03:30 [INF] Form is valid.
+2025-11-15 12:09:06.204 +03:30 [INF] Adding new product: ddd
+2025-11-15 12:09:11.196 +03:30 [INF] create product ddd
+2025-11-15 12:09:11.384 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 12:09:15.138 +03:30 [INF] get all products
+2025-11-15 12:09:15.940 +03:30 [INF] get all products
+2025-11-15 12:09:16.231 +03:30 [INF] get all products
+2025-11-15 12:09:16.553 +03:30 [INF] get all products
+2025-11-15 12:10:56.397 +03:30 [INF] OnInitialized started.
+2025-11-15 12:10:56.453 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:10:59.467 +03:30 [INF] OnInitialized started.
+2025-11-15 12:10:59.470 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:11:09.034 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 12:11:09.082 +03:30 [INF] Image file 709e9f19-6adf-4867-bdd3-9358864422f3.PNG saved successfully.
+2025-11-15 12:11:09.914 +03:30 [INF] ProcessSomething started.
+2025-11-15 12:11:09.933 +03:30 [INF] Validating StartDate: null
+2025-11-15 12:11:09.936 +03:30 [INF] Validating EndDate: null
+2025-11-15 12:11:09.937 +03:30 [INF] Form is valid.
+2025-11-15 12:11:09.937 +03:30 [INF] Adding new product: ttt
+2025-11-15 12:11:10.383 +03:30 [INF] create product ttt
+2025-11-15 12:11:11.588 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 12:11:19.778 +03:30 [INF] get all products
+2025-11-15 12:25:07.248 +03:30 [INF] OnInitialized started.
+2025-11-15 12:25:07.794 +03:30 [INF] get all products
+2025-11-15 12:25:09.106 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:25:12.031 +03:30 [INF] OnInitialized started.
+2025-11-15 12:25:12.137 +03:30 [INF] get all products
+2025-11-15 12:25:12.173 +03:30 [INF] OnInitialized completed. Tree data initialized with 2 items.
+2025-11-15 12:25:22.151 +03:30 [INF] Uploading image file: Capture.PNG
+2025-11-15 12:25:22.237 +03:30 [INF] Image file be023c5b-ba00-4b7b-8490-1a0eb3f7e4be.PNG saved successfully.
+2025-11-15 12:25:23.124 +03:30 [INF] ProcessSomething started.
+2025-11-15 12:25:23.146 +03:30 [INF] Validating StartDate: null
+2025-11-15 12:25:23.153 +03:30 [INF] Validating EndDate: null
+2025-11-15 12:25:23.158 +03:30 [INF] Form is valid.
+2025-11-15 12:25:23.159 +03:30 [INF] Adding new product: test2
+2025-11-15 12:25:23.350 +03:30 [INF] create product test2
+2025-11-15 12:25:23.725 +03:30 [INF] get all products
+2025-11-15 12:25:23.744 +03:30 [INF] ProcessSomething completed successfully.
+2025-11-15 12:25:28.070 +03:30 [INF] Opening delete dialog for product: test2
+2025-11-15 12:25:29.748 +03:30 [INF] Product deletion confirmed: test2
+2025-11-15 12:25:30.197 +03:30 [INF] get all products
+2025-11-15 12:25:30.222 +03:30 [INF] Product deleted and file removed successfully.
+2025-11-15 12:25:34.165 +03:30 [INF] get all products

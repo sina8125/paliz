@@ -1,0 +1,21 @@
+<MudDialog>
+    <DialogContent>
+        آیا واقعا میخواهید کالای @ProductName را حذف کنید؟ این فرایند قابل برگشت نیست
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">لغو</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">تایید</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string ProductName { get; set; }
+
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private void Cancel() => MudDialog.Cancel();
+}

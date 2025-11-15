@@ -1,8 +1,18 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations
+@using System.Globalization
 ﻿@using System.Globalization
 @using System.Reflection
+@using BlazorApp2.Models
+@using BlazorApp2.Services
+
+@inject IWebHostEnvironment Env
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject Serilog.ILogger Log
+@inject Services.IProductService ProductService
+
+
 
 
 
@@ -96,13 +106,13 @@
 
     </MudItem>
 </MudGrid>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="ProcessSomething">Register</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="ProcessSomething">ثبت کالا</MudButton>
 
             </MudForm>   
 
 </MudPaper>
 <MudPaper class="p-3 mt-2">
-<MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.Sm">
+<MudTable Items="@Products" Hover="true" Breakpoint="Breakpoint.Sm">
     <HeaderContent>
         <MudTh>نام کالا</MudTh>
         <MudTh>دسته بندی</MudTh>
@@ -113,6 +123,9 @@
         <MudTh>ایمیل تامین کننده</MudTh>
         <MudTh>تاریخ شروع نمایش</MudTh>
         <MudTh>تاریخ پایان نمایش</MudTh>
+        <MudTh  Style="text-align: center;">تصویر کالا</MudTh>
+        <MudTh Style="text-align: center;">ویرایش</MudTh>
+        <MudTh Style="text-align: center;">حذف</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="ProductName">@context.ProductName</MudTd>
@@ -123,6 +136,7 @@
         <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Email">@context.Email</MudTd>
         <MudTd DataLabel="StartDate">
+        
     @{
         var pc = new PersianCalendar();
         if (context.StartDate != null)
@@ -137,21 +151,37 @@
         }
     }
 </MudTd>
-<MudTd DataLabel="EndDate">
-    @{
-        var pc = new PersianCalendar();
-        if (context.EndDate != null)
-        {
-            var date = context.EndDate.Value;
-            var persianDate = $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
-            @persianDate
-        }
-        else
-        {
-            @(textContent: "-")
-        }
-    }
-</MudTd>
+        <MudTd DataLabel="EndDate">
+	        @{
+		        var pc = new PersianCalendar();
+		        if (context.EndDate != null)
+		        {
+			        var date = context.EndDate.Value;
+			        var persianDate = $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
+			        @persianDate
+		        }
+		        else
+		        {
+			        @("-")
+		        }
+	        }
+        </MudTd>
+        <MudTd>
+	        <a href="/files/@context.ProductImagePhysicalName" download="@context.ProductImageName">
+		        <MudImage Src="@("/files/" + context.ProductImagePhysicalName)" Width="300"></MudImage>
+	        </a>
+        </MudTd>
+        <MudTd>
+            <MudButton Variant="Variant.Filled" Color="Color.Info" @onclick="@(() => EditProduct(context))">
+                <MudIcon Icon="@Icons.Material.Filled.Edit"/>
+            </MudButton>
+        </MudTd>
+        <MudTd>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="@(() => OpenDeleteDialog(context))">
+                <MudIcon Icon="@Icons.Material.Filled.Delete"/>
+            </MudButton>
+
+        </MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -160,9 +190,10 @@
 
 @code {
     MudForm form;
+    List<Product> Products = new();
 
     Product model = new Product();
-    List<Product> Elements = new List<Product>();
+    Product? editedProduct = null;
 
     public string[] Brands = [
     "adidas",
@@ -183,6 +214,8 @@
 
     protected override void OnInitialized()
     {
+        Log.Information("OnInitialized started.");
+
         _treeItemData.Add(new TreeItemPresenter("کفش", Icons.Material.Filled.Label)
         {
             Expanded = true,
@@ -193,6 +226,10 @@ new TreeItemPresenter("طبی", Icons.Material.Filled.Info),
 ]
         });
         _treeItemData.Add(new TreeItemPresenter("پیراهن", Icons.Material.Filled.Label));
+
+
+        Products = ProductService.GetProducts();
+        Log.Information("OnInitialized completed. Tree data initialized with {Count} items.", _treeItemData.Count);
     }
 
     public CultureInfo GetPersianCulture()
@@ -203,13 +240,13 @@ new TreeItemPresenter("طبی", Icons.Material.Filled.Info),
         formatInfo.DayNames = new[] { "یکشنبه", "دوشنبه", "سه شنبه", "چهار شنبه", "پنجشنبه", "جمعه", "شنبه" };
         var monthNames = new[]
         {
-            "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن",
-            "اسفند",
-            "",
-        };
+			"فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن",
+			"اسفند",
+			"",
+		};
         formatInfo.AbbreviatedMonthNames =
-            formatInfo.MonthNames =
-                formatInfo.MonthGenitiveNames = formatInfo.AbbreviatedMonthGenitiveNames = monthNames;
+        formatInfo.MonthNames =
+        formatInfo.MonthGenitiveNames = formatInfo.AbbreviatedMonthGenitiveNames = monthNames;
         formatInfo.AMDesignator = "ق.ظ";
         formatInfo.PMDesignator = "ب.ظ";
         formatInfo.ShortDatePattern = "yyyy/MM/dd";
@@ -225,89 +262,138 @@ new TreeItemPresenter("طبی", Icons.Material.Filled.Info),
         culture.NumberFormat.NumberDecimalSeparator = "/";
         culture.NumberFormat.DigitSubstitution = DigitShapes.NativeNational;
         culture.NumberFormat.NumberNegativePattern = 0;
+
         return culture;
     }
-private string ValidateStartDate(DateTime? value)
-{
-    if (value == null)
-        return null;
-
-    if (model.EndDate != null && value > model.EndDate)
-        return "تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.";
-
-    return null;
-}
-
-private string ValidateEndDate(DateTime? value)
-{
-    if (value == null)
-        return null;
-
-    if (model.StartDate != null && value < model.StartDate)
-        return "تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد.";
-
-    return null;
-}
-
-    public class Product: ICloneable{
-        public object Clone()
+    private string ValidateStartDate(DateTime? value)
     {
-        return this.MemberwiseClone();
-    }
-        public string ProductName { get; set; }
-        public string Category { get; set; }
-        public string BrandName { get; set; }
-        public string SupplierName {get; set;}
-        public double Quantity { get; set; }
-        public int Price { get; set; }
-        public string Email { get; set; }
-        public DateTime? StartDate { get; set; } = null;
-        public DateTime? EndDate { get; set; } = null;
-        public IBrowserFile ProductImage { get; set; }
-        public string ProductImageName { get; set; }
+        Log.Information("Validating StartDate: {Value}", value);
+        if (value == null)
+            return null;
 
-        public IBrowserFile? CatalogImage { get; set; } = null;
-        public string? CatalogImageName { get; set; } = null ;
-
-
-    }
-    async Task ProcessSomething()
-    {
-        await form.Validate();
-        if (form.IsValid){
-            Elements.Add(model);
-            model=new Product();
+        if (model.EndDate != null && value > model.EndDate)
+        {
+            Log.Warning("StartDate {StartDate} is after EndDate {EndDate}", value, model.EndDate);
+            return "تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.";
         }
 
-
-
+        return null;
     }
-private async Task UploadImageFile(IBrowserFile file)
-{
-    if (!file.ContentType.StartsWith("image/"))
+
+    private string ValidateEndDate(DateTime? value)
     {
-        Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
-        model.ProductImage = null;
-        model.ProductImageName = string.Empty;
-        return;
+        Log.Information("Validating EndDate: {Value}", value);
+        if (value == null)
+            return null;
+
+        if (model.StartDate != null && value < model.StartDate)
+        {
+            Log.Warning("EndDate {EndDate} is before StartDate {StartDate}", value, model.StartDate);
+            return "تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد.";
+        }
+
+        return null;
     }
 
-    model.ProductImage = file;
-    model.ProductImageName = file.Name;
-    Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
-}
-private async Task UploadCatalogFile(IBrowserFile file)
-{
-    if (!file.ContentType.StartsWith("image/"))
+    async Task ProcessSomething()
     {
-        Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
-        model.CatalogImage = null;
-        model.CatalogImageName = string.Empty;
-        return;
+        Log.Information("ProcessSomething started.");
+        await form.Validate();
+        if (form.IsValid)
+        {
+            Log.Information("Form is valid.");
+            if (editedProduct != null){
+                Log.Information("Editing existing product: {ProductName}", editedProduct.ProductName);
+                ProductService.EditProduct(model);
+
+                
+            }else{
+                Log.Information("Adding new product: {ProductName}", model.ProductName);
+                ProductService.CreateProduct(model);
+            }
+            model = new Product();
+            editedProduct = null;
+            Products = ProductService.GetProducts();
+            Log.Information("ProcessSomething completed successfully.");
+        }
+        else
+        {
+            Log.Warning("Form validation failed.");
+        }
+    }
+    private async Task UploadImageFile(IBrowserFile file)
+    {
+        Log.Information("Uploading image file: {FileName}", file.Name);
+        if (!file.ContentType.StartsWith("image/"))
+        {
+            Log.Warning("Invalid file type: {ContentType}", file.ContentType);
+            Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
+            // model.ProductImage = null;
+            model.ProductImageName = string.Empty;
+            model.ProductImagePhysicalName = string.Empty;
+            return;
+        }
+
+        // model.ProductImage = file;
+        model.ProductImageName = file.Name;
+        model.ProductImagePhysicalName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(file.Name)}";
+        
+
+        using var stream = file.OpenReadStream(maxAllowedSize: 5_000_000);
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        var bytes = ms.ToArray();
+        File.WriteAllBytes(Env.WebRootPath + $"/data/images/{model.ProductImagePhysicalName}",bytes);
+
+        Log.Information("Image file {FileName} saved successfully.", model.ProductImagePhysicalName);
+        Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
+    }
+    private async Task UploadCatalogFile(IBrowserFile file)
+    {
+        Log.Information("Uploading catalog file: {FileName}", file.Name);
+        if (!file.ContentType.StartsWith("image/"))
+        {
+            Log.Warning("Invalid catalog file type: {ContentType}", file.ContentType);
+            Snackbar.Add("فقط فایل‌های تصویری مجاز هستند (jpg, png, gif و ...)", Severity.Error);
+            // model.CatalogImage = null;
+            model.CatalogImageName = string.Empty;
+            return;
+        }
+
+        // model.CatalogImage = file;
+        model.CatalogImageName = file.Name;
+        Log.Information("Catalog image {FileName} uploaded successfully.", model.CatalogImageName);
+        Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
     }
 
-    model.CatalogImage = file;
-    model.CatalogImageName = file.Name;
-    Snackbar.Add("تصویر با موفقیت انتخاب شد.", Severity.Success);
-}
+    private async Task EditProduct(Product product){
+        Log.Information("Editing product: {ProductName}", product.ProductName);
+        editedProduct = product;
+        model = (Product)product.Clone();
+        Log.Information("Product cloned and ready for editing.");
+    }
+
+    private async Task OpenDeleteDialog(Product product)
+    {
+        Log.Information("Opening delete dialog for product: {ProductName}", product.ProductName);
+        var options = new DialogOptions { CloseOnEscapeKey = true, NoHeader = true };
+        var parameters = new DialogParameters<Dialog>
+        {
+            {
+            x => x.ProductName, product.ProductName
+            }
+        };
+
+        var dialog = await DialogService.ShowAsync<Dialog>("", parameters, options);
+        var result = await  dialog.Result;
+        if (result != null && !result.Canceled){
+            Log.Information("Product deletion confirmed: {ProductName}", product.ProductName);
+	        File.Delete(Env.WebRootPath + $"/data/images/{product.ProductImagePhysicalName}");
+	        ProductService.DeleteProduct(product);
+	        Products = ProductService.GetProducts();
+            Log.Information("Product deleted and file removed successfully.");
+        } else {
+            Log.Information("Product deletion canceled for {ProductName}", product.ProductName);
+        }
+    }
 }
